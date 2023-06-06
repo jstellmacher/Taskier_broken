@@ -1,4 +1,4 @@
-![phase-4-task-mgm](https://github.com/matthew-j-roche/phase-4-project/assets/86083839/124fa576-ee16-45d5-bccd-d3188a20514b)
+
 
 # Phase 4 Full-Stack Application Project Template
 
