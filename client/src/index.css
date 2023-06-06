@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset default styles */
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+  }
+
+h1{
+    font-size: xx-large;
+    text-align: center;
+}

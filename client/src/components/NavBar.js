@@ -3,19 +3,27 @@ import { Link } from 'react-router-dom';
 
 const NavBar = () => {
   return (
-    <nav>
-      <ul>
+    <nav className="bg-gradient-to-r from-orange-500 to-yellow-500">
+      <ul className="flex justify-between items-center p-4">
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/" className="text-white font-bold text-lg">
+            Home
+          </Link>
         </li>
         <li>
-          <Link to="/users">Users</Link>
+          <Link to="/users" className="text-white hover:text-gray-200 ml-4">
+            Users
+          </Link>
         </li>
         <li>
-          <Link to="/tasks">Tasks</Link>
+          <Link to="/tasks" className="text-white hover:text-gray-200 ml-4">
+            Tasks
+          </Link>
         </li>
         <li>
-          <Link to="/todos">Todos</Link>
+          <Link to="/todos" className="text-white hover:text-gray-200 ml-4">
+            Todos
+          </Link>
         </li>
       </ul>
     </nav>

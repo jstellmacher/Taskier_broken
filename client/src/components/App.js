@@ -10,7 +10,7 @@ import Todos from './Todos';
 const App = () => {
   return (
     <Router>
-      <div>
+      <div className="">
         <NavBar />
         <Switch>
           <Route exact path="/" component={Home} />
