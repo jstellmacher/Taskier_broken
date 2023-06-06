@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NavBar from './NavBar';
 
-import Home from './components/Home';
-import Users from './components/Users';
-import Tasks from './components/Tasks';
-import Todos from './components/Todos';
+import Home from './Home';
+import Users from './Users';
+import Tasks from './Tasks';
+import Todos from './Todos';
 
 const App = () => {
   return (
