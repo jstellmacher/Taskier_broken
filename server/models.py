@@ -6,6 +6,7 @@ from config import db
 
 class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
+    __tablename__ = 'users'
     # username = db.Column(db.String(255))
     # role = db.Column(db.String(255))
     # password = db.Column(db.String(255))
@@ -14,18 +15,20 @@ class User(db.Model, SerializerMixin):
     tasks = db.relationship('Task', backref='user', lazy=True)
 
 class Task(db.Model, SerializerMixin):
+    __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     description = db.Column(db.Text)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     status = db.Column(db.String(255))
     created_at = db.Column(db.TIMESTAMP)
     todos = db.relationship('Todo', backref='task', lazy=True)
 
 class Todo(db.Model, SerializerMixin):
+    __tablename__ = 'todos'
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.Text)
-    task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)
+    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False)
     created_at = db.Column(db.TIMESTAMP)
 
 

@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request, make_response
 from flask_restful import Resource
 # Local imports
 from config import app, db, api
-from models import User, Recipe
+from models import User
 
 from flask import Flask, jsonify, request, make_response
 from flask_migrate import Migrate
