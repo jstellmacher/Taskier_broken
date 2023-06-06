@@ -29,3 +29,16 @@ api = Api(app)
 
 # Instantiate CORS
 CORS(app)
+
+# ! Below is the app.py top stuff that apparently exists here already
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.json_encoder = None
+
+# migrate = Migrate(app, db)
+
+# db.init_app(app)
+
+# api = Api(app)
+# CORS(app)
