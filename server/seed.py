@@ -27,10 +27,18 @@ if __name__ == '__main__':
 
             print("Creating users...")
             users = []
-            for _ in range(3):
-                user = User(created_at=fake.date_time_this_decade())
+            for _ in range(5):
+                email = fake.email()
+                password = fake.password()
+                username = fake.user_name()
+                created_at = fake.date_time_this_decade()
+
+                user = User(email=email, password=password, username=username, created_at=created_at)
+
                 users.append(user)
+
                 db.session.add(user)
+
             db.session.commit()
 
             print("Creating tasks...")
@@ -60,5 +68,6 @@ if __name__ == '__main__':
             db.session.commit()
 
             print("Seeding done!")
+
 
         seed_data()

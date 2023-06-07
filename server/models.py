@@ -7,10 +7,10 @@ from config import db
 class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     __tablename__ = 'users'
-    # username = db.Column(db.String(255))
+    username = db.Column(db.String(255))
     # role = db.Column(db.String(255))
-    # password = db.Column(db.String(255))
-    # email = db.Column(db.String(255))
+    password = db.Column(db.String(255))
+    email = db.Column(db.String(255))
     created_at = db.Column(db.TIMESTAMP)
     tasks = db.relationship('Task', backref='user', lazy=True)
 
