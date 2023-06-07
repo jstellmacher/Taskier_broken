@@ -21,6 +21,11 @@ const NavBar = () => {
           </Link>
         </li>
         <li>
+          <Link to="/authentication" className="text-white hover:text-gray-200 ml-4">
+            Authentication
+          </Link>
+        </li>
+        <li>
           <Link to="/todos" className="text-white hover:text-gray-200 ml-4">
             Todos
           </Link>

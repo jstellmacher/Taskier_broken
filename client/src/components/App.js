@@ -6,6 +6,7 @@ import Home from './Home';
 import Users from './Users';
 import Tasks from './Tasks';
 import Todos from './Todos';
+import Authentication from './Authentication';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <div className="">
         <NavBar />
         <Switch>
+          <Route exact path="/authentication" component={Authentication} />
           <Route exact path="/" component={Home} />
           <Route path="/users" component={Users} />
           <Route path="/tasks" component={Tasks} />

@@ -33,7 +33,13 @@ class Users(Resource):
         db.session.add(user)
         db.session.commit()
 
-        return make_response(jsonify({'message': 'User created successfully'}), 201)
+        session['user_id'] = user.id
+        response = make_response(new_user.to_dict(), 201)
+
+
+        return response
+
+        # return make_response(jsonify({'message': 'User created successfully'}), 201)
 
 
 class UserById(Resource):
