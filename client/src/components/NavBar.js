@@ -1,32 +1,51 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
+  const navItemClasses =
+    "text-white ml-4 transition-colors duration-300 focus:text-gray-200 focus:outline-none";
+  const navBarClasses = "bg-gradient-to-r from-orange-500 to-yellow-500";
+  const ulClasses = "flex justify-between items-center p-4";
+  const liClasses = "inline-flex items-center";
+  const separatorClasses = "border-l border-gray-300 h-4 mx-2";
+
   return (
-    <nav className="bg-gradient-to-r from-orange-500 to-yellow-500">
-      <ul className="flex justify-between items-center p-4">
-        <li>
-          <Link to="/" className="text-white font-bold text-lg">
+    <nav className={navBarClasses}>
+      <ul className={ulClasses}>
+        <li className={`${liClasses}`}>
+          <Link
+            to="/"
+            className={`${navItemClasses} hover:bg-gray-200 hover:text-gray-800 font-bold text-lg`}
+          >
             Home
           </Link>
         </li>
-        <li>
-          <Link to="/users" className="text-white hover:text-gray-200 ml-4">
+        <li className={`${liClasses} ml-auto space-x-4`}>
+          <Link
+            to="/users"
+            className={`${navItemClasses} hover:bg-gray-200 hover:text-gray-800`}
+          >
             Users
           </Link>
-        </li>
-        <li>
-          <Link to="/tasks" className="text-white hover:text-gray-200 ml-4">
+          <div className={separatorClasses}></div>
+          <Link
+            to="/tasks"
+            className={`${navItemClasses} hover:bg-gray-200 hover:text-gray-800`}
+          >
             Tasks
           </Link>
-        </li>
-        <li>
-          <Link to="/authentication" className="text-white hover:text-gray-200 ml-4">
+          <div className={separatorClasses}></div>
+          <Link
+            to="/authentication"
+            className={`${navItemClasses} hover:bg-gray-200 hover:text-gray-800`}
+          >
             Authentication
           </Link>
-        </li>
-        <li>
-          <Link to="/todos" className="text-white hover:text-gray-200 ml-4">
+          <div className={separatorClasses}></div>
+          <Link
+            to="/todos"
+            className={`${navItemClasses} hover:bg-gray-200 hover:text-gray-800`}
+          >
             Todos
           </Link>
         </li>

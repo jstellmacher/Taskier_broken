@@ -13,3 +13,20 @@ h1{
     font-size: xx-large;
     text-align: center;
 }
+/* @keyframes moveGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+  animation-duration: 10s;
+}
+.animate-moveGradient {
+  background-image: linear-gradient(45deg, #f3b558, #fef08a 5%, #ff3c00);
+  animation: moveGradient 7s linear infinite;
+  background-size: 700% 350%;
+} */

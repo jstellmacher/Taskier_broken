@@ -39,6 +39,12 @@ class Users(Resource):
 
         return response
 
+        # new_user = User(
+        #     name = form_json['name'],
+        #     email = form_json['email'],
+        #     password = form_json['password']
+        # )
+
         # return make_response(jsonify({'message': 'User created successfully'}), 201)
 
 
