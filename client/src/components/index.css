@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset default styles */
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+  }
+
+h1{
+    font-size: xx-large;
+    text-align: center;
+}
+.taskListCard {
+  background-color: #ffffff;
+  padding: 20px;
+  width: 75%;
+  margin-left: 2%;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: solid 2px black;
+  border-radius: 30px;
+}
+
+.taskCard {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: auto;
+  margin-bottom: 1%;
+  border-radius: 16px;
+  box-shadow: 2px 2px 4px black;
+}
+
+.taskCardTopRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1%;
+}
+
+.taskCardBottomRow {
+  margin: 1%;
+}
+
+.taskCardTitle {
+  background-color: #ffffff;
+  padding-left: 1%;
+  padding-right: 1%;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px black;
+}
+
+.taskCardPriority {
+  background-color: #ffffff;
+  padding-left: 1%;
+  padding-right: 1%;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px black;
+}
+
+.taskCardDescription {
+  background-color: #ffffff;
+  padding-left: 1%;
+  padding-right: 1%;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px black;
+}
+
+.navbar {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.navbar li {
+  margin-right: 10px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #000;
+}
+
+/* body {
+  background-color: #ffffff; */
+
+/* @keyframes moveGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+  animation-duration: 10s;
+}
+.animate-moveGradient {
+  background-image: linear-gradient(45deg, #f3b558, #fef08a 5%, #ff3c00);
+  animation: moveGradient 7s linear infinite;
+  background-size: 700% 350%;
+} */
