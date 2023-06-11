@@ -1,198 +1,144 @@
-#!/usr/bin/env python3
-# Remote library imports
 from flask import Flask, jsonify, request, make_response
-from flask_restful import Resource
+from flask_restful import Resource, Api
+from flask_sqlalchemy import SQLAlchemy
+
 # Local imports
 from config import app, db, api
-from models import User
+from models import User, Task
 
-from flask import Flask, jsonify, request, make_response
-from flask_migrate import Migrate
-from flask_restful import Api, Resource
-
-from models import db, User, Task, Todo
-# !---------------------------------------------------------------------!
+# ---------------------------------------------------------------------!
 
 @app.route('/')
 def index():
-    return '<h1>Code challenge</h1>'
+    return '<h1>TASKIER</h1>'
 
 
 class Users(Resource):
     def get(self):
         users = User.query.all()
-        user_list = [user.to_dict() for user in users]
-        return jsonify(user_list)
-
-    def post(self):
-        data = request.get_json()
-        if not data:
-            return make_response(jsonify({'error': 'Invalid request data'}), 400)
-
-        user = User(**data)
-        db.session.add(user)
-        db.session.commit()
-
-        session['user_id'] = user.id
-        response = make_response(new_user.to_dict(), 201)
-
-
-        return response
-
-        # new_user = User(
-        #     name = form_json['name'],
-        #     email = form_json['email'],
-        #     password = form_json['password']
-        # )
-
-        # return make_response(jsonify({'message': 'User created successfully'}), 201)
+        users_list = [user.to_dict() for user in users]
+        return make_response(jsonify(users_list), 200)
 
 
 class UserById(Resource):
     def get(self, id):
         user = User.query.get(id)
         if user:
-            return jsonify(user.to_dict())
-        return {'error': 'User not found'}, 404
+            return make_response(jsonify(user.to_dict()), 200)
+        else:
+            return make_response(jsonify({'error': 'User not found'}), 404)
 
-    def patch(self, id):
+
+class UserTasks(Resource):
+    def post(self, id):
         user = User.query.get(id)
         if not user:
             return {'error': 'User not found'}, 404
 
         data = request.get_json()
-        if not data:
+        if not data or 'task' not in data:
             return make_response(jsonify({'error': 'Invalid request data'}), 400)
 
-        for key, value in data.items():
-            setattr(user, key, value)
-
+        task_description = data['task']
+        task = Task(description=task_description, user_id=user.id)
+        db.session.add(task)
         db.session.commit()
 
-        return jsonify(user.to_dict())
-
-    def delete(self, id):
-        user = User.query.get(id)
-        if not user:
-            return {'error': 'User not found'}, 404
-
-        db.session.delete(user)
-        db.session.commit()
-
-        return make_response(jsonify({'message': 'User deleted successfully'}), 200)
+        return make_response(jsonify({'message': 'Task added successfully'}), 201)
 
 
 class Tasks(Resource):
     def get(self):
         tasks = Task.query.all()
-        task_list = [task.to_dict() for task in tasks]
-        return jsonify(task_list)
+        tasks_list = [task.to_dict() for task in tasks]
+        return make_response(jsonify(tasks_list), 200)
 
     def post(self):
         data = request.get_json()
-        if not data:
-            return make_response(jsonify({'error': 'Invalid request data'}), 400)
+        title = data.get('title')
+        # Add logic to create a new task with the provided title
 
-        task = Task(**data)
-        db.session.add(task)
-        db.session.commit()
+    
+class Signup(Resource):
+    def post(self):
+        request_json = request.get_json()
 
-        return make_response(jsonify({'message': 'Task created successfully'}), 201)
+        username = request_json.get('username')
+        password = request_json.get('_password_hash')
 
+        user._password_hash = password
 
-class TaskById(Resource):
-    def get(self, id):
-        task = Task.query.get(id)
-        if task:
-            return jsonify(task.to_dict())
-        return {'error': 'Task not found'}, 404
+        try:
+            db.session.add(user)
+            db.session.commit()
 
-    def patch(self, id):
-        task = Task.query.get(id)
-        if not task:
-            return {'error': 'Task not found'}, 404
+            session['user_id'] = customer.id
 
-        data = request.get_json()
-        if not data:
-            return make_response(jsonify({'error': 'Invalid request data'}), 400)
+            return user.to_dict(), 201
 
-        for key, value in data.items():
-            setattr(task, key, value)
+        except IntegrityError:
+            return {'error' : '422 Unprocessable Entity'}, 422 
 
-        db.session.commit()
-
-        return jsonify(task.to_dict())
-
-    def delete(self, id):
-        task = Task.query.get(id)
-        if not task:
-            return {'error': 'Task not found'}, 404
-
-        db.session.delete(task)
-        db.session.commit()
-
-        return make_response(jsonify({'message': 'Task deleted successfully'}), 200)
-
-
-class Todos(Resource):
+class CheckSession(Resource):
     def get(self):
-        todos = Todo.query.all()
-        todo_list = [todo.to_dict() for todo in todos]
-        return jsonify(todo_list)
+        if session.get('user_id'):
+            customer = User.query.filter(User.id == session['user_id']).first()
 
+            return user.to_dict(), 200
+        return {'error': '401 Unauthorized'}, 401
+
+
+class Login(Resource):
+    
     def post(self):
-        data = request.get_json()
-        if not data:
-            return make_response(jsonify({'error': 'Invalid request data'}), 400)
 
-        todo = Todo(**data)
-        db.session.add(todo)
-        db.session.commit()
+        user = User.query.filter_by(email=request.get_json()['username']).first()
 
-        return make_response(jsonify({'message': 'Todo created successfully'}), 201)
+        if user and user.authenticate(request.get_json()['password']):
+            # if user.authenticate(password):
 
+            # session['user_id'] = user.id
+            
+            response = make_response(user.to_dict(), 200)
+            response.set_cookie('user_name', user.first_name)
+            response.set_cookie('user_username', user.username)
+        
+        # else:
+        #     return make_response({"error": "Unauthorized"}, 400)
 
-class TodoById(Resource):
-    def get(self, id):
-        todo = Todo.query.get(id)
-        if todo:
-            return jsonify(todo.to_dict())
-        return {'error': 'Todo not found'}, 404
+        else:
+            response = make_response({'error' : '401 Unauthroized'} , 401)
 
-    def patch(self, id):
-        todo = Todo.query.get(id)
-        if not todo:
-            return {'error': 'Todo not found'}, 404
-
-        data = request.get_json()
-        if not data:
-            return make_response(jsonify({'error': 'Invalid request data'}), 400)
-
-        for key, value in data.items():
-            setattr(todo, key, value)
-
-        db.session.commit()
-
-        return jsonify(todo.to_dict())
-
-    def delete(self, id):
-        todo = Todo.query.get(id)
-        if not todo:
-            return {'error': 'Todo not found'}, 404
-
-        db.session.delete(todo)
-        db.session.commit()
-
-        return make_response(jsonify({'message': 'Todo deleted successfully'}), 200)
+        return response
 
 
+class Logout(Resource):
+    def delete(self):
+
+        for cookie in request.cookies:
+            response.set_cookie(cookie, '', expires=0)
+
+        return make_response('Logged out')
+
+@app.route('/cookies', methods=['GET'])
+def cookies():
+    if request.method == 'GET':
+        email = request.cookies.get('user_email')
+        user = User.query.filter(User.email == email).first()
+        if user:
+            response = make_response(user.to_dict(), 200)
+    return response
+
+api.add_resource(Signup, '/signup')
+api.add_resource(Login, '/login')
+api.add_resource(Logout, '/logout')
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:id>')
-api.add_resource(Tasks, '/tasks')
-api.add_resource(TaskById, '/tasks/<int:id>')
-api.add_resource(Todos, '/todos')
-api.add_resource(TodoById, '/todos/<int:id>')
-
+api.add_resource(UserTasks, '/users/<int:id>/tasks')
+api.add_resource(CheckSession, '/check-session')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
+    with app.app_context():
+        db.create_all()
+        app.run(debug=True)

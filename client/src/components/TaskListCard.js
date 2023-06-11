@@ -1,7 +1,7 @@
 import React from 'react';
 import TaskCard from './TaskCard';
 
-const TaskListCard = ({ tasks }) => {
+function TaskListCard({ tasks }) {
   return (
     <div className="taskListCard">
       <h3>Tasks:</h3>

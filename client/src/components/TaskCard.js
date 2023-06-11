@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TaskCard = ({ task }) => {
+function TaskCard({ task }) {
   const handleStatusUpdate = async (status) => {
     try {
       const response = await fetch(`http://localhost:5555/tasks/${task.id}`, {

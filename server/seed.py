@@ -1,28 +1,23 @@
-#!/usr/bin/env python3
-
 # Standard library imports
-from random import randint, choice as rc
+from random import choice as rc, rendint
 
 # Remote library imports
 from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Task, Todo
+from models import db, User, Task
 
 if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
         print("Starting seed...")
-        # Seed code goes here!
-
         
         def seed_data():
             fake = Faker()
 
             print("Deleting data...")
-            db.session.query(Task).delete()
-            db.session.query(Todo).delete()
+            db.session.query(Task).delete(synchronize_session=False)
             db.session.query(User).delete()
 
             print("Creating users...")
@@ -38,8 +33,7 @@ if __name__ == '__main__':
                 users.append(user)
 
                 db.session.add(user)
-
-            db.session.commit()
+                db.session.commit()
 
             print("Creating tasks...")
             tasks = []
@@ -48,26 +42,14 @@ if __name__ == '__main__':
                     task = Task(
                         title=fake.sentence(nb_words=3),
                         description=fake.paragraph(),
-                        user_id=user.id,
+                        user=user,  # Assign the user object directly
                         status=fake.random_element(elements=("todo", "in progress", "done")),
                         created_at=fake.date_time_this_decade()
                     )
                     tasks.append(task)
                     db.session.add(task)
-            db.session.commit()
-
-            print("Creating todos...")
-            for task in tasks:
-                for _ in range(3):
-                    todo = Todo(
-                        description=fake.sentence(nb_words=6),
-                        task_id=task.id,
-                        created_at=fake.date_time_this_decade()
-                    )
-                    db.session.add(todo)
-            db.session.commit()
+                    db.session.commit()
 
             print("Seeding done!")
-
 
         seed_data()

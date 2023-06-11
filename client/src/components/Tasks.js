@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const Tasks = () => {
+function Tasks() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {

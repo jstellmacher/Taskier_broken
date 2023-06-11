@@ -1,18 +1,33 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import UserPage from './UserPage';
-import NavBar from './NavBar';
+// import React, { useState, useEffect } from 'react';
+// import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
-const App = () => {
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, } from 'react-router-dom';
+
+import NavBar from './NavBar';
+import UserPage from './UserPage';
+import AddTask from './AddTask';
+import Signup from "./Signup.js";
+import Login from "./Login.js";
+
+function App() {
+
+
   return (
     <Router>
-      <NavBar /> {/* Include the NavBar component here */}
+      <NavBar /> 
       <Switch>
-        <Route exact path="/">
-          <Redirect to="/users/1" /> {/* Redirect to a specific user page */}
-        </Route>
         <Route path="/users/:id">
           <UserPage />
+        </Route>
+        <Route exact path="/users/:id/add-task">
+          <AddTask />
+        </Route>
+        <Route exact path="/login">
+          <Login />
+        </Route>
+        <Route exact path="/signup">
+          <Signup />
         </Route>
       </Switch>
     </Router>

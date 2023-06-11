@@ -3,6 +3,7 @@
     "tailwindcss": "^3.3.2"
   },
   "dependencies": {
-    "formik": "^2.4.1"
+    "formik": "^2.4.1",
+    "react-router-dom": "^6.12.1"
   }
 }

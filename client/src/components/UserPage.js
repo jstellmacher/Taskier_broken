@@ -4,7 +4,7 @@ import './index.css';
 import TaskCard from './TaskCard';
 import TaskListCard from './TaskListCard';
 
-const UserPage = () => {
+function UserPage() {
   const { id } = useParams();
   const [tasks, setTasks] = useState([]);
 
@@ -25,6 +25,9 @@ const UserPage = () => {
   return (
     <div>
       <TaskListCard tasks={tasks} />
+      <div>
+        <Link to={`/users/${id}/add-task`}>Add Task</Link>
+      </div>
     </div>
   );
 };

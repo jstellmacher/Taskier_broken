@@ -1,15 +1,3 @@
-"""potato
-
-Revision ID: 8ce5efa85226
-Revises: 5d59acc6164c
-Create Date: 2023-06-07 10:51:00.099282
-
-"""
-from alembic import op
-import sqlalchemy as sa
-
-
-# revision identifiers, used by Alembic.
 revision = '8ce5efa85226'
 down_revision = '5d59acc6164c'
 branch_labels = None
@@ -23,6 +11,13 @@ def upgrade():
         batch_op.add_column(sa.Column('password', sa.String(length=255), nullable=True))
         batch_op.add_column(sa.Column('email', sa.String(length=255), nullable=True))
 
+    # Add the user_id column to the tasks table
+    with op.batch_alter_table('tasks', schema=None) as batch_op:
+        batch_op.add_column(sa.Column('user_id', sa.Integer(), nullable=False))
+
+    # Create the foreign key constraint
+    op.create_foreign_key('fk_tasks_user_id_users', 'tasks', 'users', ['user_id'], ['id'])
+
     # ### end Alembic commands ###
 
 
@@ -33,4 +28,9 @@ def downgrade():
         batch_op.drop_column('password')
         batch_op.drop_column('username')
 
-    # ### end Alembic commands ###
+    # Remove the foreign key constraint
+    op.drop_constraint('fk_tasks_user_id_users', 'tasks', type_='foreignkey')
+
+    # Remove the user_id column from the tasks table
+    with op.batch_alter_table('tasks', schema=None) as batch_op:
+        batch_op.drop_column('user_id')
