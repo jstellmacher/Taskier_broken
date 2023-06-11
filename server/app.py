@@ -1,12 +1,16 @@
-from flask import Flask, jsonify, request, make_response
+from flask import Flask, jsonify, request, make_response, session
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 # Local imports
 from config import app, db, api
 from models import User, Task
+CORS(app)
 
 # ---------------------------------------------------------------------!
+
+app.secret_key ='secret'
 
 @app.route('/')
 def index():
@@ -36,15 +40,18 @@ class UserTasks(Resource):
             return {'error': 'User not found'}, 404
 
         data = request.get_json()
-        if not data or 'task' not in data:
+        if not data or 'title' not in data or 'description' not in data:
             return make_response(jsonify({'error': 'Invalid request data'}), 400)
 
-        task_description = data['task']
-        task = Task(description=task_description, user_id=user.id)
+        task_title = data['title']
+        task_description = data['description']
+
+        task = Task(title=task_title, description=task_description, user_id=id)
         db.session.add(task)
         db.session.commit()
 
         return make_response(jsonify({'message': 'Task added successfully'}), 201)
+
 
 
 class Tasks(Resource):
@@ -52,11 +59,6 @@ class Tasks(Resource):
         tasks = Task.query.all()
         tasks_list = [task.to_dict() for task in tasks]
         return make_response(jsonify(tasks_list), 200)
-
-    def post(self):
-        data = request.get_json()
-        title = data.get('title')
-        # Add logic to create a new task with the provided title
 
     
 class Signup(Resource):
@@ -72,20 +74,24 @@ class Signup(Resource):
             db.session.add(user)
             db.session.commit()
 
-            session['user_id'] = customer.id
+            session['id'] = customer.id
 
             return user.to_dict(), 201
 
-        except IntegrityError:
-            return {'error' : '422 Unprocessable Entity'}, 422 
+        except:
+            return make_response(jsonify({'error': 'Failed to create user'}), 400)
 
-class CheckSession(Resource):
-    def get(self):
-        if session.get('user_id'):
-            customer = User.query.filter(User.id == session['user_id']).first()
 
-            return user.to_dict(), 200
-        return {'error': '401 Unauthorized'}, 401
+@app.route('/check-session', methods=['GET'])
+def CheckSession():
+    if session.get('user_id'):
+        # User is logged in
+        response = make_response(jsonify({'message': 'User is logged in'}), 200)
+        response.set_cookie('user_id', str(session['user_id']))
+        return response
+    else:
+        # User is not logged in
+        return make_response(jsonify({'message': 'User is not logged in'}), 401)
 
 
 class Login(Resource):
@@ -100,8 +106,7 @@ class Login(Resource):
             # session['user_id'] = user.id
             
             response = make_response(user.to_dict(), 200)
-            response.set_cookie('user_name', user.first_name)
-            response.set_cookie('user_username', user.username)
+            response.set_cookie('username', user.username)
         
         # else:
         #     return make_response({"error": "Unauthorized"}, 400)
@@ -135,7 +140,6 @@ api.add_resource(Logout, '/logout')
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:id>')
 api.add_resource(UserTasks, '/users/<int:id>/tasks')
-api.add_resource(CheckSession, '/check-session')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

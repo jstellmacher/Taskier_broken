@@ -1,60 +1,74 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import NavBar from './NavBar';
-import UserPage from './UserPage';
-import AddTask from './AddTask';
-import Signup from './Signup.js';
-import Login from './Login.js';
+const Login = ({ onLogin }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const history = useHistory();
 
-function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userId, setUserId] = useState('');
-  const location = useLocation();
 
-  const handleLogin = (userId) => {
-    setLoggedIn(true);
-    setUserId(userId);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchUserLogin();
   };
 
-  useEffect(() => {
-    fetch('/check-session')
+  const fetchUserLogin = () => {
+    fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    })
       .then((response) => {
         if (response.ok) {
-          setLoggedIn(true);
+          onLogin();
+          history.push(`/users/:id`);
         } else {
-          setLoggedIn(false);
+          // Handle login error
         }
       });
-  }, []);
-
-  const shouldDisplayNavBar = location.pathname !== '/login' && location.pathname !== '/signup';
+  };
 
   return (
-    <Router>
-      {shouldDisplayNavBar && <NavBar />}
-      <Switch>
-        <Route exact path="/login">
-          <Login onLogin={() => setLoggedIn(true)} />
-        </Route>
-        <Route exact path="/signup">
-          <Signup />
-        </Route>
-        {loggedIn ? (
-          <>
-            <Route exact path="/users/:id">
-              <UserPage />
-            </Route>
-            <Route exact path="/users/:id/add-task">
-              <AddTask />
-            </Route>
-          </>
-        ) : (
-          <Redirect to="/login" />
-        )}
-      </Switch>
-    </Router>
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Username:
+          <input
+            className="formInput"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input
+            className="formInput"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        <br />
+        <button className="button" type="submit">
+          Login
+        </button>
+      </form>
+      <div id="signupRedirectButton">
+        <h2>Don't have an account?</h2>
+        <button className="button" onClick={() => history.push('/signup')}>
+          Signup
+        </button>
+      </div>
+    </div>
   );
-}
+};
 
-export default App;
+export default Login;
