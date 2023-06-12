@@ -5,6 +5,7 @@ const containerStyles = "taskListCard";
 const headingStyles = "text-2xl font-bold";
 const labelStyles = "block mt-4";
 const selectStyles = "formSelect w-full border-2 border-gray-300 rounded-md mb-4 p-2";
+const separatorStyles = "border-b border-gray-300 my-4";
 
 function TaskListCard({ tasks }) {
   const [sortOption, setSortOption] = useState('');
@@ -55,8 +56,11 @@ function TaskListCard({ tasks }) {
           <option value="priority">Priority</option>
         </select>
       </div>
-      {sortedTasks.map((task) => (
-        <TaskCard task={task} key={task.id} />
+      {sortedTasks.map((task, index) => (
+        <React.Fragment key={task.id}>
+          <TaskCard task={task} />
+          {index !== sortedTasks.length - 1 && <hr className={separatorStyles} />}
+        </React.Fragment>
       ))}
     </div>
   );
