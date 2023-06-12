@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { FiInfo, FiHome, FiCalendar, FiSmile } from 'react-icons/fi';
 
 const containerStyles = 'flex items-center justify-between p-4';
@@ -12,21 +12,21 @@ function NavBar() {
     <nav>
       <ul className={containerStyles}>
         <li className={itemStyles}>
-          <Link to="/">
+          <NavLink exact to="/" activeClassName="text-blue-500">
             <FiHome className={logoStyles} />
-          </Link>
+          </NavLink>
           <span className={textStyles}>Home</span>
         </li>
         <li className={itemStyles}>
-          <Link to="/users/:id/calendar">
+          <NavLink to="/users/:id/calendar" activeClassName="text-blue-500">
             <FiCalendar className={logoStyles} />
-          </Link>
+          </NavLink>
           <Link to="/users/:id/account">
             <FiInfo className={logoStyles} />
           </Link>
-          <Link to="/about">
+          <NavLink to="/about" activeClassName="text-blue-500">
             <FiSmile className={logoStyles} />
-          </Link>
+          </NavLink>
         </li>
       </ul>
     </nav>

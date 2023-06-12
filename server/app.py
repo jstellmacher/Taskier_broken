@@ -14,6 +14,39 @@ bcrypt = Bcrypt(app)
 def index():
     return '<h1>TASKIER</h1>'
 
+class AccountUsername(Resource):
+    def put(self, id):
+        user = User.query.get(id)
+        if not user:
+            return {'error': 'User not found'}, 404
+
+        data = request.get_json()
+        if not data or 'username' not in data:
+            return make_response(jsonify({'error': 'Invalid request data'}), 400)
+
+        new_username = data['username']
+        user.username = new_username
+        db.session.commit()
+
+        return make_response(jsonify({'message': 'Username updated successfully'}), 200)
+
+
+class AccountPassword(Resource):
+    def put(self, id):
+        user = User.query.get(id)
+        if not user:
+            return {'error': 'User not found'}, 404
+
+        data = request.get_json()
+        if not data or 'password' not in data:
+            return make_response(jsonify({'error': 'Invalid request data'}), 400)
+
+        new_password = data['password']
+        hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+
+        return make_response(jsonify({'message': 'Password updated successfully'}), 200)
 
 class Users(Resource):
     def get(self):
@@ -209,6 +242,8 @@ api.add_resource(TaskById, '/tasks/<int:id>')
 api.add_resource(UserById, '/users/<int:id>')
 api.add_resource(UserTasks, '/users/<int:id>/tasks')
 api.add_resource(Account, '/users/<int:id>/account')
+api.add_resource(AccountUsername, '/users/<int:id>/account/username')
+api.add_resource(AccountPassword, '/users/<int:id>/account/password')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
