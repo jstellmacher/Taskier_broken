@@ -6,6 +6,7 @@ import Signup from './Signup';
 import AddTask from './AddTask';
 import UserPage from './UserPage';
 import About from './About';
+import Account from './Account';
 
 
 function App() {
@@ -26,6 +27,7 @@ function DefaultLayout() {
       <NavBar /> {/* Display Navbar component on all routes except Login and Signup */}
       <Switch>
         <Route path="/users/:id/add-task" component={AddTask} />
+        <Route path="/users/:id/account" component={Account} />
         <Route path="/users/:id" component={UserPage} />
         <Route path="/about" component={About} />
       </Switch>

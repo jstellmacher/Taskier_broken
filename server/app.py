@@ -31,6 +31,14 @@ class UserById(Resource):
             return make_response(jsonify(user.to_dict()), 200)
         else:
             return make_response(jsonify({'error': 'User not found'}), 404)
+        
+class Account(Resource):
+    def get(self, id):
+        user = User.query.get(id)
+        if user:
+            return make_response(jsonify(user.to_dict()), 200)
+        else:
+            return make_response(jsonify({'error': 'User not found'}), 404)
 
 
 class UserTasks(Resource):
@@ -141,6 +149,7 @@ api.add_resource(Logout, '/logout')
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:id>')
 api.add_resource(UserTasks, '/users/<int:id>/tasks')
+api.add_resource(Account, '/users/<int:id>/account')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
