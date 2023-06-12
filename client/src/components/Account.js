@@ -9,7 +9,7 @@ function Account() {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch('/users/:id'); // Replace :id with the actual user ID
+      const response = await fetch('/users/4/account');
       if (response.ok) {
         const data = await response.json();
         setUser(data);
@@ -30,16 +30,6 @@ function Account() {
           <p>Username: {user.username}</p>
           <p>Email: {user.email}</p>
           <p>Created At: {user.created_at}</p>
-          <h2>Tasks:</h2>
-          <ul>
-            {user.tasks.map((task) => (
-              <li key={task.id}>
-                <p>ID: {task.id}</p>
-                <p>Title: {task.title}</p>
-                <p>Description: {task.description}</p>
-              </li>
-            ))}
-          </ul>
         </div>
       ) : (
         <p>Loading user information...</p>
