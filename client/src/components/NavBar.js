@@ -1,23 +1,36 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import homeImage from '../assets/home.png';
-import calendarImage from '../assets/calendar.png';
-import accountImage from '../assets/account.png';
-import taskierImage from '../assets/taskier.png';
+import { FiInfo, FiHome, FiCalendar, FiSmile } from 'react-icons/fi';
+
+const containerStyles = 'flex items-center justify-between p-4';
+const itemStyles = 'flex items-center';
+const logoStyles = 'h-8 w-8 mr-2'; // Adjusted size for larger icons
+const textStyles = 'font-bold';
 
 function NavBar() {
   return (
     <nav>
-      <ul className="navbar">
-        <li className="navbarLi">
-          <Link to="/"><img src={homeImage} alt="Home" style={{ height: '20%' }} /></Link>
-          <Link to="/users/:id/calendar"><img src={calendarImage} alt="Calendar" style={{ height: '20%' }} /></Link>
-          <Link to="/users/:id/account"><img src={accountImage} alt="Account" style={{ height: '20%' }} /></Link>
-          <Link to="/about"><img src={taskierImage} alt="Taskier" style={{ height: '20%' }} /></Link>
+      <ul className={containerStyles}>
+        <li className={itemStyles}>
+          <Link to="/">
+            <FiHome className={logoStyles} />
+          </Link>
+          <span className={textStyles}>Home</span>
+        </li>
+        <li className={itemStyles}>
+          <Link to="/users/:id/calendar">
+            <FiCalendar className={logoStyles} />
+          </Link>
+          <Link to="/users/:id/account">
+            <FiInfo className={logoStyles} />
+          </Link>
+          <Link to="/about">
+            <FiSmile className={logoStyles} />
+          </Link>
         </li>
       </ul>
     </nav>
   );
-};
+}
 
 export default NavBar;

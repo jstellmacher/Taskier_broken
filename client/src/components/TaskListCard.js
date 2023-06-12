@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import TaskCard from './TaskCard';
 
+const containerStyles = "taskListCard";
+const headingStyles = "text-2xl font-bold";
+const labelStyles = "block mt-4";
+const selectStyles = "formSelect w-full border-2 border-gray-300 rounded-md mb-4 p-2";
+
 function TaskListCard({ tasks }) {
   const [sortOption, setSortOption] = useState('');
 
@@ -37,11 +42,11 @@ function TaskListCard({ tasks }) {
   const sortedTasks = sortOption ? sortTasks(sortOption) : tasks;
 
   return (
-    <div className="taskListCard">
-      <h3>Tasks:</h3>
-      <div>
-        <label htmlFor="sortOption">Sort by:</label>
-        <select id="sortOption" value={sortOption} onChange={handleSortChange}>
+    <div className={containerStyles}>
+      <h3 className={headingStyles}>Tasks:</h3>
+      <div className="flex flex-col">
+        <label htmlFor="sortOption" className={labelStyles}>Sort by:</label>
+        <select id="sortOption" value={sortOption} onChange={handleSortChange} className={selectStyles}>
           <option value="">-- Select an option --</option>
           <option value="due_date_asc">Due Date (Old to New)</option>
           <option value="due_date_desc">Due Date (New to Old)</option>

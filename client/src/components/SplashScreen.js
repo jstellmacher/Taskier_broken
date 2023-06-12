@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import taskierImage from '../assets/taskier.png';
+import taskierImage from '../assets/no_bg_logo.png';
+import './SplashScreen.css'; // Import CSS file for additional styles
 
 const SplashScreen = () => {
   const history = useHistory();
@@ -15,8 +16,10 @@ const SplashScreen = () => {
   }, [history]);
 
   return (
-    <div>
-      <img src={taskierImage} alt="Taskier" style={{ height: '80%' }} />
+    <div className="splash-container">
+      <div className="pulse-animation">
+        <img src={taskierImage} alt="Taskier" className="pulse-image" />
+      </div>
       <p>Loading...</p>
     </div>
   );

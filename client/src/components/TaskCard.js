@@ -1,5 +1,13 @@
 import React from 'react';
 
+const containerStyles = "taskCard";
+const topRowStyles = "flex justify-between items-center";
+const titleStyles = "taskCardTitle";
+const priorityStyles = (highPriority) => {
+  return `taskCardPriority ${highPriority ? 'bg-green-500' : 'bg-red-500'}`;
+};
+const descriptionStyles = "taskCardDescription";
+
 function TaskCard({ task }) {
   const handleStatusUpdate = async (status) => {
     try {
@@ -24,22 +32,16 @@ function TaskCard({ task }) {
     }
   };
 
-  const priorityButtonStyle = {
-    backgroundColor: task.high_priority ? 'green' : 'red',
-  };
-
-  const priorityButtonText = task.high_priority ? 'High Priority' : 'Low Priority';
-
   return (
-    <div className="taskCard" key={task.id}>
-      <div className="taskCardTopRow">
-        <div className="taskCardTitle">{task.title}</div>
-        <div className="taskCardPriority" style={priorityButtonStyle}>
-          {priorityButtonText}
+    <div className={containerStyles} key={task.id}>
+      <div className={topRowStyles}>
+        <div className={titleStyles}>{task.title}</div>
+        <div className={priorityStyles(task.high_priority)}>
+          {task.high_priority ? 'High Priority' : 'Low Priority'}
         </div>
       </div>
       <div className="taskCardBottomRow">
-        <div className="taskCardDescription">{task.description}</div>
+        <div className={descriptionStyles}>{task.description}</div>
       </div>
       {/* <div className="taskCardStatus"> */}
       {/* <button onClick={() => handleStatusUpdate('todo')}>To Do</button>

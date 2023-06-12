@@ -13,7 +13,7 @@ h1{
     font-size: xx-large;
     text-align: center;
 }
-.taskListCard {
+/* .taskListCard {
   background-color: #ffffff;
   padding: 20px;
   width: 75%;
@@ -68,7 +68,7 @@ h1{
   padding-right: 1%;
   border-radius: 5px;
   box-shadow: 2px 2px 2px black;
-}
+} */
 
 /* .navbar {
   margin: 2%;

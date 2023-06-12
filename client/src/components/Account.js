@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
+const containerStyles =
+  "bg-gradient-to-r from-green-900 to-teal-200 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8";
+const cardStyles = "max-w-md w-full p-6 bg-white rounded-lg shadow-2xl";
+const titleStyles = "text-2xl font-bold text-center";
+const loadingStyles = "text-center";
+
 function Account() {
   const [user, setUser] = useState(null);
 
@@ -22,18 +28,20 @@ function Account() {
   };
 
   return (
-    <div>
-      {user ? (
-        <div>
-          <h1>User Information</h1>
-          <p>ID: {user.id}</p>
-          <p>Username: {user.username}</p>
-          <p>Email: {user.email}</p>
-          <p>Created At: {user.created_at}</p>
-        </div>
-      ) : (
-        <p>Loading user information...</p>
-      )}
+    <div className={containerStyles}>
+      <div className={cardStyles}>
+        <h1 className={titleStyles}>User Information</h1>
+        {user ? (
+          <div>
+            <p>ID: {user.id}</p>
+            <p>Username: {user.username}</p>
+            <p>Email: {user.email}</p>
+            <p>Created At: {user.created_at}</p>
+          </div>
+        ) : (
+          <p className={loadingStyles}>Loading user information...</p>
+        )}
+      </div>
     </div>
   );
 }

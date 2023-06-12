@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+const containerStyles = "bg-gradient-to-r from-green-900 to-teal-200 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8";
+const cardStyles = "max-w-md w-full p-6 bg-white rounded-lg shadow-2xl";
+
 function Users() {
   const [users, setUsers] = useState([]);
 
@@ -33,18 +36,20 @@ function Users() {
   };
 
   return (
-    <div>
-      <h1>Users</h1>
-      {users.map((user) => (
-        <div key={user.id}>
-          <h3>{user.username}</h3>
-          <p>Email: {user.email}</p>
-          <h4>Tasks:</h4>
-          {renderTasks(user.tasks)}
-        </div>
-      ))}
+    <div className={containerStyles}>
+      <div className={cardStyles}>
+        <h1>Users</h1>
+        {users.map((user) => (
+          <div key={user.id}>
+            <h3>{user.username}</h3>
+            <p>Email: {user.email}</p>
+            <h4>Tasks:</h4>
+            {renderTasks(user.tasks)}
+          </div>
+        ))}
+      </div>
     </div>
   );
-};
+}
 
 export default Users;
