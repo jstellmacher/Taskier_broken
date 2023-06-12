@@ -1,18 +1,17 @@
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy.ext.hybrid import hybrid_property
 from config import db
-# from werkzeug.security
-# import generate_password_hash, check_password_hash
-# from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+from flask_bcrypt import Bcrypt
 
-# db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
+    __tablename__ = 'users'
     username = db.Column(db.String(255))
     password = db.Column(db.String(255))
     email = db.Column(db.String(255))
-    created_at = db.Column(db.String(19))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Set default value to current timestamp
     tasks = db.relationship('Task', backref='user', lazy=True)
 
     def to_dict(self):
@@ -24,32 +23,23 @@ class User(db.Model, SerializerMixin):
             'tasks': [task.to_dict() for task in self.tasks]
         }
 
-    @hybrid_property
-    def password_hash(self):
-        return self._password_hash
+    def set_password(self, password):
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-    @password_hash.setter
-    def password_hash(self, password):
-        password_hash = bcrypt.generate_password_hash(password.encode('utf-8'))
-        print(password_hash)
-        self._password_hash = password_hash.decode('utf-8')
-
-    def authenticate(self, password):
-        return bcrypt.check_password_hash(self._password_hash, password.encode('utf-8'))
-
-    def __repr__(self):
-        return f'<User {self.id}>'
-
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
+  
 
 class Task(db.Model, SerializerMixin):
+    __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     description = db.Column(db.Text)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     due_date = db.Column(db.Date)
     high_priority = db.Column(db.Boolean)
     status = db.Column(db.String(255))
-    created_at = db.Column(db.String(19))
+    created_at = db.Column(db.TIMESTAMP)
 
     def to_dict(self):
         return {

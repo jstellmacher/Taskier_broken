@@ -5,7 +5,7 @@ function Signup() {
   const [newUser, setNewUser] = useState({
     username: "",
     email: "",
-    _password_hash: "",
+    password: "", // Update the password field name
   });
 
   const history = useHistory();
@@ -20,7 +20,7 @@ function Signup() {
 
   const handleSubmitSignup = (event) => {
     event.preventDefault();
-    if (newUser._password_hash === event.target.confirmPassword.value) {
+    if (newUser.password === event.target.confirmPassword.value) {
       console.log("good job on the matching passwords");
       handleCreateAccount();
     } else {
@@ -29,19 +29,32 @@ function Signup() {
   };
 
   const handleCreateAccount = () => {
-    fetch("/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newUser),
-    })
-      .then((response) => response.json())
-      .then((newUserData) => {
-        console.log(newUserData);
-        window.alert("Account created successfully. Please log in.");
-        history.push("/login");
-      });
+    const { confirmPassword, ...userData } = newUser; // Remove confirmPassword from the userData
+
+    if (userData.password === confirmPassword) {
+      fetch("/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          window.alert("Account created successfully. Please log in.");
+          history.push("/login");
+        })
+        .catch((error) => {
+          console.log(error);
+          // Handle error response if registration fails
+          window.alert("Error creating account. Please try again.");
+        });
+    } else {
+      window.alert(
+        "Your passwords do not match. Please reenter your password and try again."
+      );
+    }
   };
 
   return (
@@ -67,9 +80,9 @@ function Signup() {
         <br />
         <input
           className="formInput"
-          value={newUser._password_hash}
+          value={newUser.password}
           type="password"
-          name="_password_hash"
+          name="password" // Update the name of the password field
           placeholder="Enter your password here."
           onChange={handleNewUserChange}
         />

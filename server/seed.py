@@ -1,5 +1,5 @@
 # Standard library imports
-from random import choice as rc, rendint
+from random import choice as rc, randint
 
 # Remote library imports
 from faker import Faker

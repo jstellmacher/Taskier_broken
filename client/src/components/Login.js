@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-const Login = ({ onLogin }) => {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const history = useHistory();
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,17 +25,26 @@ const Login = ({ onLogin }) => {
     })
       .then((response) => {
         if (response.ok) {
-          onLogin();
-          history.push(`/users/:id`);
+          return response.json();
         } else {
-          // Handle login error
+          throw new Error('Login failed. Please check your credentials.');
         }
+      })
+      .then((data) => {
+        console.log(data);
+        // Redirect to the user profile page after successful login
+        history.push(`/users/${data.user_id}`);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error.message);
       });
   };
 
   return (
     <div>
       <h1>Login</h1>
+      {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <label>
           Username:
