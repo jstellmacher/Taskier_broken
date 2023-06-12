@@ -134,6 +134,7 @@ def cookies():
             response = make_response(user.to_dict(), 200)
     return response
 
+
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')

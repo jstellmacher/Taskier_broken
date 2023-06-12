@@ -5,6 +5,8 @@ import Login from './Login';
 import Signup from './Signup';
 import AddTask from './AddTask';
 import UserPage from './UserPage';
+import About from './About';
+
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function DefaultLayout() {
       <Switch>
         <Route path="/users/:id/add-task" component={AddTask} />
         <Route path="/users/:id" component={UserPage} />
+        <Route path="/about" component={About} />
       </Switch>
     </>
   );
